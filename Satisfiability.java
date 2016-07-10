@@ -8,13 +8,14 @@ public class Satisfiability {
 
 	public static volatile boolean flag = false;
 	public static volatile int theResult = -1;
-	public static volatile int notFound = 0;
-	
+		
 	public static int [] numbers;
-	public static int limit;
+	public static int upperBound;
 	
 	public static void main(String []args) {
 		
+		long startTime = System.currentTimeMillis();
+
 		if(args.length != 1) {
 			System.out.println("Usage: <input file>");
 			return;
@@ -34,7 +35,7 @@ public class Satisfiability {
 			StringTokenizer st1 = new StringTokenizer(firstLine, " ");
 			
 			clausesNumber = Integer.valueOf(st1.nextToken());
-			limit = Integer.valueOf(st1.nextToken());
+			upperBound = Integer.valueOf(st1.nextToken());
 			
 			numbers = new int[clausesNumber * 3]; 
 			
@@ -48,8 +49,7 @@ public class Satisfiability {
 					counter++;
 					temp++;
 				}
-			}
-			
+			}			
 			br.close();
 			
 		} catch(FileNotFoundException fnfe) {
@@ -58,38 +58,30 @@ public class Satisfiability {
 			io.printStackTrace();
 		}
 		
-		//int delimeter = limit * 100;
-
-		double max = Math.pow(2, limit); 		
-		int theChunk = (int) max / limit;
+		int max = (int) Math.pow(2, upperBound); 		
 		
-		//int controller = 0;		
-		for(int i = 0; i < limit; i++) {
-			//if((i+ 1) * (theChunk) < max) {
+		int chunker = 1000;
+		int theChunk = (int) max / chunker;
+
+		for(int i = 0; i < chunker - 2; i++) {
 				ChunkThread ct = new ChunkThread(i * theChunk, (i+ 1) * (theChunk));
 				ct.start();
-			//} else {
-				//ChunkThread ct = new ChunkThread(i * theChunk, (int) max);
-				//ct.start();
-			//}
+		}			
+		ChunkThread ct = new ChunkThread( (chunker - 1) * theChunk, (int) max + 1);
+		ct.start();
+		
+		System.out.println("Threads are working...");
+		while(!flag && Thread.activeCount() != 1) {
+			/*wait while working*/
 		}		
-		int border = limit;
-		
-		if(limit * theChunk < (int) max) {
-			ChunkThread ct = new ChunkThread( limit * theChunk, (int) max + 1);
-			ct.start();
-			
-			border++;			
-		} 
-		
-		while(!flag && notFound < border) {
-			//System.out.println(notFound + " vs " + delimeter + " Active threads: " + Thread.activeCount());		
-		}
-
 		if(theResult != -1) {
 			System.out.println("Solution found: [" + theResult + "]: " + Integer.toBinaryString(theResult));						
 		} else System.out.println("Solution not found");	
 		
+		long stopTime = System.currentTimeMillis();
+	    long elapsedTime = stopTime - startTime;
+	    System.out.println("The time spent is: "  + elapsedTime);
+	    
 		System.exit(0);		
 	}
 }
