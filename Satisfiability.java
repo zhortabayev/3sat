@@ -16,14 +16,12 @@ public class Satisfiability {
 		
 		double startTime = System.currentTimeMillis();
 
-		if(args.length != 2) {
-			System.out.println("Usage: <input file> <partition>");
-			System.out.println("Partition number is around 250");
+		if(args.length != 1) {
+			System.out.println("Usage: <input file>");
 			return;
 			}
 		
 		String input = args[0];				
-		int objectsNumber = Integer.valueOf(args[1]);
 		int clausesNumber = 0;
 		
 		try {
@@ -62,7 +60,7 @@ public class Satisfiability {
 		int max = (int) Math.pow(2, upperBound); 	
 		int processors = Runtime.getRuntime().availableProcessors();
 		
-		int mult = processors * objectsNumber;		
+		int mult = processors * 125;		
 		int theRightChunk = max / mult;
 		
 		for(int i = 0; i < mult; i++) {
