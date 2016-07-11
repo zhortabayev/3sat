@@ -55,21 +55,14 @@ public class ChunkThread extends Thread {
 				if(negativeCounter == 3) break; 							
 			}			
 				if(controller >= numbers.length - 1) {
+					isInterrupted = true;
 					Satisfiability.theResult = counter;
 					Satisfiability.flag = true;
-					isInterrupted = true;
 					break;
 				} 		
 				counter++;
-			}	
+			}
 	}
-	/*
-	private boolean charToBool(char c) {	    
-		if(c == '1')
-			return true;
-		return false;
-	}
-	*/
 	private boolean isTrue(String s, int position) {	    
 		if( s.charAt(position)== '1')
 			return true;
