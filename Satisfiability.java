@@ -16,7 +16,7 @@ public class Satisfiability {
 		
 		double startTime = System.currentTimeMillis();
 
-		if(args.length != 1) {
+		if(args.length != 2) {
 			System.out.println("Usage: <input file> <partition>");
 			System.out.println("Partition number is around 250");
 			return;
