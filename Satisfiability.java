@@ -60,7 +60,7 @@ public class Satisfiability {
 		int max = (int) Math.pow(2, upperBound); 	
 		int processors = Runtime.getRuntime().availableProcessors();
 		
-		int mult = processors * 125;		
+		int mult = processors * upperBound;		
 		int theRightChunk = max / mult;
 		
 		for(int i = 0; i < mult; i++) {
